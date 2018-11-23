@@ -1,16 +1,15 @@
+; Ввести с клавиатуры строку символов. Вывести на экран её
+; двоичное представление.
 format PE Console 4.0
 entry Start
 include 'win32a.inc'
 section '.text' code readable executable
 Start:
  invoke printf, _insert_x
- push x
- push mesInp
- call [scanf]
+ invoke scanf, mesInp, x
 
  mov ebx, x
- mov esi, 0
- xor eax,eax
+ mov esi, 0 ; индекс для итерации по строке
  _begin:
   mov al, [ebx+esi]
   cmp al,0
@@ -29,10 +28,10 @@ Start:
   dec di
   jmp _continue
  _loop_end:
- push mesSpace
- call [printf]
- inc esi
- jmp _begin
+  push mesSpace
+  call [printf]
+  inc esi
+  jmp _begin
 Stop:
  call [getch]
 Exit:
@@ -44,8 +43,7 @@ section '.data' data readable writeable
  mesInp db '%s',0
  mesBinary db '%u',0
  mesSpace db ' ',0
- x dd 0
-; b dd 0
+ x dd ?
  errMes db 'Overflow EAX', 0dh, 0ah, 0
 section '.idata' import data readable
  library kernel, 'KERNEL32.DLL', msvcrt, 'msvcrt.dll'

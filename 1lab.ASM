@@ -1,22 +1,19 @@
+ ; Дана строка из 15 символов. Разработать программу, осуществляющую
+ ; круговую перестановку части букв исходной строки.
+ ; 8) с пятого символа по четырнадцатый через один;
  format PE console
  entry Start
 include 'win32a.inc'
  section '.text' code readable executable
  Start:
- ;mov eax, 0x12345678
- ;mov [c], eax
- ;mov [0x00402000], byte 100
 
  xor eax,eax
  mov ebx, array
- ;mov esi, 0
- ;mov al, [ebx+esi+1]
- ;mov al, [array+esi+1]
  mov esi,4
 _swap_start:
 
  mov al, [ebx+esi]
- mov cl, [ebx+esi+1]
+ mov cl, [ebx+esi+2]
  cmp al,0
  jz _swap_end
  cmp cl,0
@@ -24,12 +21,9 @@ _swap_start:
 
  xchg al,cl
  mov [ebx+esi], al
- mov [ebx+esi+1], cl
+ mov [ebx+esi+2], cl
 
- ;mov al, [ebx+3]
-
- ;mov [ebx], al
- add esi,2
+ add esi,3
  jmp _swap_start
 _swap_end:
  push ebx
@@ -40,7 +34,6 @@ _swap_end:
  push exit_msg
  call [printf]
 
- push 0
  ccall [getchar]
  push 0
  call [ExitProcess]
